@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+		<property name="genders" type="java.util.List&lt;org.training.facades.product.data.GenderData>"/>
+		<property name="manufacturerDetails" type="java.util.List&lt;org.training.facades.product.data.ManufacturerData>"/>
+		<property name="players" type="java.util.Collection&lt;org.training.facades.product.data.PlayerData>"/>
+
+	</bean>
+
+	<bean class="org.training.facades.product.data.GenderData">
+		<property name="code" type="String"/>
+		<property name="name" type="String"/>
+	</bean>
+
+	<bean class="org.training.facades.product.data.ManufacturerData">
+		<property name="id" type="Integer"/>
+		<property name="name" type="String"/>
+		<property name="state" type="String"/>
+		<property name="country" type="de.hybris.platform.commercefacades.user.data.CountryData"/>
+	</bean>
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+		<value>manufacturer</value>
+	</enum>
+
+	<bean class="org.training.facades.product.data.StudentData">
+		<property name="id" type="Integer"/>
+		<property name="name" type="String"/>
+		<property name="standard" type="String"/>
+		<property name="address" type="String"/>
+	</bean>
+
+	<bean class="org.training.facades.product.data.PlayerData">
+		<property name="id" type="Integer"/>
+		<property name="name" type="String"/>
+		<property name="country" type="de.hybris.platform.commercefacades.user.data.CountryData"/>
+	</bean>
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+		<value>player</value>
+	</enum>
+
+	<bean class="org.training.facades.product.data.TeacherData">
+		<property name="id" type="Integer"/>
+		<property name="name" type="String"/>
+		<property name="degree" type="String"/>
+		<property name="phone" type="Long"/>
+	</bean>
+
+	<bean class="org.training.facades.product.data.CustomersData">
+		<property name="customerCreated" type="java.util.Date"/>
+		<property name="name" type="String"/>
+		<property name="place" type="String"/>
+		<property name="isNeworOld" type="java.lang.Boolean"/>
+	</bean>
+
+	<bean class="de.hybris.platform.commercefacades.user.data.CustomerData">
+		<property name="isNew" type="java.lang.Boolean"/>
+		<property name="place" type="String"/>
+		<property name="newBusinessUser" type="java.lang.boolean"/>
+	</bean>
+
+	<bean class="de.hybris.platform.commercefacades.user.data.RegisterData">
+		 <property name="place" type="String"/>
+		<property name="newBusinessUser" type="java.lang.boolean"/>
+	</bean>
+
+
+	<bean class="de.hybris.platform.solrfacetsearch.config.IndexConfig">
+		<property name="customUserGroup" type="java.util.List&lt;de.hybris.platform.core.model.user.UserGroupModel>"/>
+	</bean>
+
+
+</beans>

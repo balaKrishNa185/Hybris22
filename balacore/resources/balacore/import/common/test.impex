@@ -1,0 +1,15 @@
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId
+                             ;testJobPerformable;testJobPerformable
+
+INSERT_UPDATE TestCronJob;code[unique=true];job(code);firstName;lastName
+                         ;testCronjob;testJobPerformable;Mr;Kumar
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+                     ;testCronjob;0 */5 * ? * *
+
+                     INSERT_UPDATE Servicelayerjob;code[unique=true];springId
+                                                  ;isNewCustomerJob;isNewCustomerJob
+                     INSERT_UPDATE NewCustomerCronJob;code[unique=true];job(code);days;sessionLanguage[isocode]
+                                                     ;newCustomerCronJob;isNewCustomerJob;5;en
+                     INSERT_UPDATE Trigger;Cronjob(code)[unique=true];cronExpression
+                                           ;newCustomerCronJob;* * 0/4 ? * MON

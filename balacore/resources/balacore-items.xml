@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <collectiontypes>
+        <collectiontype code="GenderList" elementtype="Gender" autocreate="true" generate="true" type="list"/>
+        <collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum" autocreate="true" generate="true"
+                        type="set"/>
+
+        <collectiontype code="Nations" elementtype="NationEnum" autocreate="true" generate="true" type="list"/>
+
+
+    </collectiontypes>
+
+
+
+
+    <enumtypes>
+        <enumtype generate="true" code="SwatchColorEnum" autocreate="true" dynamic="true">
+            <value code="BLACK"/>
+            <value code="BLUE"/>
+            <value code="BROWN"/>
+            <value code="GREEN"/>
+            <value code="GREY"/>
+            <value code="ORANGE"/>
+            <value code="PINK"/>
+            <value code="PURPLE"/>
+            <value code="RED"/>
+            <value code="SILVER"/>
+            <value code="WHITE"/>
+            <value code="YELLOW"/>
+        </enumtype>
+
+        <enumtype generate="true" code="NationEnum" autocreate="true" dynamic="true">
+            <value code="INDIA"/>
+            <value code="USA"/>
+            <value code="KENYA"/>
+            <value code="PAKISTAN"/>
+            <value code="UK"/>
+            <value code="MEXICO"/>
+        </enumtype>
+
+        <enumtype code="BallTypes" autocreate="true" generate="true" dynamic="true">
+            <value code="SPONGE"/>
+            <value code="PLASTIC"/>
+            <value code="RUBBER"/>
+            <value code="TENNIS"/>
+            <value code="CORK"/>
+            <value code="PINK"/>
+        </enumtype>
+
+
+
+    </enumtypes>
+
+    <relations>
+        <relation code="Manu2Product" localized="false" >
+            <deployment table="Manu2Product" typecode="14514"/>
+            <sourceElement type="Manufacturer" qualifier="manufacturers" cardinality="many" collectiontype="list">
+                <modifiers read="true" write="true" partof="true"/>
+            </sourceElement>
+            <targetElement type="Product" qualifier="products" cardinality="many" collectiontype="list">
+                <modifiers read="true" write="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="Player2Product" localized="false">
+            <deployment table="Player2Product" typecode="15478"/>
+            <sourceElement type="Player" cardinality="many" qualifier="players" collectiontype="collection">
+                <modifiers read="true" write="true" partof="true"/>
+            </sourceElement>
+            <targetElement type="Product" cardinality="many" qualifier="products" collectiontype="collection">
+                <modifiers read="true" write="true" />
+            </targetElement>
+        </relation>
+
+        <relation code="Solr2user" localized="false">
+            <deployment table="Solr2user" typecode="15778"/>
+            <sourceElement type="SolrFacetSearchConfig" cardinality="many" qualifier="solrFacetSearchConfig" ordered="false" collectiontype="list">
+                <modifiers read="true" write="true" />
+            </sourceElement>
+            <targetElement type="UserGroup" cardinality="many" qualifier="customUserGroup" collectiontype="list">
+                <modifiers read="true" write="true" />
+            </targetElement>
+        </relation>
+
+
+    </relations>
+    <itemtypes>
+
+        <!-- Add your item definitions here -->
+
+
+        <!-- TypeGroups are for structure of this file only -->
+
+        <typegroup name="Apparel">
+            <itemtype code="ApparelProduct" extends="Product"
+                      autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.ApparelProduct">
+                <description>Base apparel product extension that contains additional attributes.</description>
+                <attributes>
+                    <attribute qualifier="genders" type="GenderList">
+                        <description>List of genders that the ApparelProduct is designed for</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="ApparelStyleVariantProduct" extends="VariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.ApparelStyleVariantProduct">
+                <description>Apparel style variant type that contains additional attribute describing variant style.
+                </description>
+                <attributes>
+                    <attribute qualifier="style" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor" >
+                        <description>Color/Pattern of the product.</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="swatchColors" type="SwatchColorSet">
+                        <description>A normalized color mapping to a standardized front-end navigable name.
+                        </description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+
+            </itemtype>
+
+            <itemtype code="ApparelSizeVariantProduct" extends="ApparelStyleVariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.ApparelSizeVariantProduct">
+                <description>Apparel size variant type that contains additional attribute describing variant size.
+                </description>
+                <attributes>
+                    <attribute qualifier="size" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor">
+                        <description>Size of the product.</description>
+                        <modifiers />
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Electronics">
+            <itemtype code="ElectronicsColorVariantProduct" extends="VariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.ElectronicsColorVariantProduct">
+                <description>Electronics color variant type that contains additional attribute describing variant color.
+                </description>
+                <attributes>
+                    <attribute qualifier="color" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor">
+                        <description>Color of the product.</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="custom">
+            <itemtype code="Manufacturer" autocreate="true" generate="true">
+                <deployment table="Manufacturer" typecode="21212"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer" >
+                        <modifiers optional="false" read="true" write="true" initial="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="state" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="country" type="Country">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Rem">
+            <itemtype code="ManuEntry" autocreate="true" generate="true">
+                <deployment table="ManuEntry" typecode="12451"/>
+                <attributes>
+                    <attribute qualifier="idEntry" type="java.lang.Integer">
+                        <modifiers optional="false" read="true" write="true" initial="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="nameEntry" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="stateEntry" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="countryEntry" type="Country">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="custom1">
+            <itemtype code="Student" autocreate="true" generate="true">
+                <deployment table="Student" typecode="15232"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers optional="false" unique="true" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="standard" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="address" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Rem1">
+            <itemtype code="StuEntry" autocreate="true" generate="true">
+                <deployment table="StuEntry" typecode="13987"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers optional="false" unique="true" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="standard" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="address" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="Cricket">
+            <itemtype code="Player" autocreate="true" generate="true">
+                <deployment table="Player" typecode="19878"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers optional="false" unique="true" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="country" type="Country">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Practice1">
+            <itemtype code="Sam" autocreate="true" >
+                <deployment table="Sam" typecode="14251"/>
+                <attributes>
+                    <attribute qualifier="xDaysOld" type="java.lang.Integer">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+                <model generate="false"/>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="Practice2">
+            <itemtype code="Sam1" autocreate="true" generate="true">
+                <deployment table="Sam1" typecode="14271"/>
+                <attributes>
+                    <attribute qualifier="xDaysOld" type="java.lang.Integer">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property"/>
+                        <model generate="false"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property"/>
+                        <model>
+                            <getter name="MYname" default="true"/>
+                        </model>
+                    </attribute>
+                    <attribute qualifier="city" type="java.lang.String">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Coll">
+            <itemtype code="College" autocreate="true" generate="true">
+                <deployment table="College" typecode="14562"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" unique="true"/>
+                        <defaultvalue>Integer.valueOf(0)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="city" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="country" type="Country">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Teach">
+            <itemtype code="Teacher" autocreate="true" generate="true">
+                <deployment table="Teacher" typecode="12365"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" unique="true"/>
+                        <defaultvalue>Integer.valueOf(0)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="degree" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="phone" type="java.lang.Long">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Cron">
+            <itemtype code="TestCronJob" generate="true" autocreate="true" extends="CronJob">
+           <attributes>
+               <attribute qualifier="firstName" type="java.lang.String">
+                   <modifiers read="true" write="true"/>
+                   <persistence type="property"/>
+               </attribute>
+               <attribute qualifier="lastName" type="java.lang.String">
+                   <modifiers read="true" write="true"/>
+                   <persistence type="property"/>
+               </attribute>
+           </attributes>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="Test1">
+            <itemtype code="Jeep" autocreate="true" generate="true" >
+           <deployment table="Jeep" typecode="17845"/>
+                <attributes>
+                    <attribute qualifier="ts" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>String.valueOf("dsd")</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Jeep" autocreate="true" generate="true">
+                <deployment table="Jeep" typecode="17945"/>
+                <attributes>
+                    <attribute qualifier="sa" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>String.valueOf("dsd")</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="test3">
+        <itemtype code="Jeep" autocreate="true" generate="true" >
+            <deployment table="Jeep" typecode="17945"/>
+            <attributes>
+                <attribute qualifier="sa1" type="java.lang.String">
+                    <modifiers read="true" write="true" optional="false" initial="false"/>
+                    <defaultvalue>String.valueOf("dsd")</defaultvalue>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+    </typegroup>
+
+
+    <typegroup name="Test2">
+            <itemtype code="Test2" autocreate="true" generate="true" abstract="true">
+                <deployment table="Test2" typecode="17415"/>
+                <attributes>
+                    <attribute qualifier="ts" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>String.valueOf("dsd")</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+
+        </typegroup>
+
+
+    <typegroup name="car">
+        <itemtype code="Ship" autocreate="true" generate="true">
+            <deployment table="Ship" typecode="17417"/>
+            <attributes>
+                <attribute qualifier="country" type="Country">
+                    <modifiers read="true" write="true" initial="false" partof="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="firstName" type="java.lang.String">
+                    <modifiers read="true" write="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+    </typegroup>
+
+
+        <typegroup name="Mahendra">
+            <itemtype code="Thar" autocreate="true" generate="false" extends="Jeep" >
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+    <!--    <typegroup name="samsung">
+            <itemtype code="Galaxy" autocreate="false" generate="false" extends="Jeep" >
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+-->
+
+        <typegroup name="samsung1">
+            <itemtype code="Galaxy2" autocreate="true" generate="true"  >
+                <deployment table="Galaxy2" typecode="17436"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Galaxy2" autocreate="true" generate="true"  >
+                <deployment table="Galaxy2" typecode="17436"/>
+                <attributes>
+                    <attribute qualifier="no" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="model" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Galaxy2" autocreate="true" generate="true"  >
+                <deployment table="Galaxy2" typecode="17773"/>
+                <attributes>
+                    <attribute qualifier="phone" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="place" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+
+            <itemtype code="Galaxy2" autocreate="false" generate="false"  >
+                <attributes>
+                    <attribute qualifier="address" type="java.lang.Integer">
+                        <modifiers read="true" write="true" optional="false" initial="false"/>
+                        <defaultvalue>Integer.valueOf(45)</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="city" type="java.lang.String">
+                        <modifiers read="true" write="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+
+        <typegroup name="Testing">
+            <itemtype code="Accounts" autocreate="true" generate="true">
+                <deployment table="Accounts" typecode="13598"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Integer">
+                        <modifiers optional="true" read="true" write="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="localized:java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="nation" type="Nations">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="ball" type="BallTypes">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="place" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+        
+        
+        <typegroup name="Hello">
+            <itemtype code="HelloWorldCronJob" autocreate="true" generate="true" extends="CronJob">
+                <attributes>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="place" type="java.lang.String">
+                    <modifiers read="true" write="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="Cus">
+            <itemtype code="Customers" autocreate="true" generate="true">
+                <deployment table="Customers" typecode="14795"/>
+                <attributes>
+                    <attribute qualifier="customerCreated" type="java.util.Date">
+                        <modifiers write="true" read="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <modifiers write="true" read="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="place" type="java.lang.String">
+                        <modifiers write="true" read="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="isNeworOld" type="java.lang.Boolean">
+                        <modifiers write="true" read="true"/>
+                        <defaultvalue>Boolean.FALSE</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+       <typegroup name="Cus">
+        <itemtype code="CustomersRemovalCronJob" extends="CronJob" autocreate="true" generate="true">
+            <attributes>
+                <attribute qualifier="xDaysOld" type="int">
+                    <modifiers read="true" write="true" optional="false"/>
+                    <defaultvalue>Integer.valueOf(5)</defaultvalue>
+                    <description>All Products older than this value in days and whose price is not defined will be removed
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+       </typegroup>
+
+
+        <typegroup name="CustomJob">
+            <itemtype code="CustomerDescriptionCronJob" autocreate="true" generate="true" extends="CronJob">
+                <attributes>
+                    <attribute qualifier="nullOrNotNull" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="NewCustomerCronJob" autocreate="true" generate="true" extends="CronJob">
+                <attributes>
+                    <attribute qualifier="days" type="java.lang.Integer">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Customer" autocreate="false" generate="false" >
+                <attributes>
+                    <attribute qualifier="isNew" type="java.lang.Boolean">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Customer" autocreate="false" generate="false">
+                <attributes>
+                    <attribute qualifier="place" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="newBusinessUser" type="java.lang.boolean">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="HybrisInstructive">
+            <itemtype code="TrainingComponent1" extends="SimpleCMSComponent" autocreate="true" generate="true"
+            jaloclass="org.training.core.jalo.TrainingComponent1">
+                <attributes>
+                    <attribute qualifier="productName" type="localized:java.lang.String">
+                        <modifiers read="true" write="true" optional="false"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="brand" type="localized:java.lang.String">
+                        <modifiers read="true" write="true" optional="false"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="productImage" type="Media">
+                        <modifiers read="true" write="true" optional="false"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+
+
+        <typegroup name="HybrisInst">
+            <itemtype code="TestingComponent1" extends="SimpleCMSComponent" autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.TestingComponent1">
+                <attributes>
+                    <attribute qualifier="display" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="SampleComponent">
+            <itemtype code="DisplayComponent" extends="SimpleCMSComponent" autocreate="true" generate="true"
+            jaloclass="org.training.core.jalo.DisplayComponent">
+                <attributes>
+                    <attribute qualifier="count" type="java.lang.Integer">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="LatestComponent">
+            <itemtype code="LatestProductsComponent" extends="SimpleCMSComponent" autocreate="true" generate="true"
+                      jaloclass="org.training.core.jalo.LatestProductsComponent">
+                <attributes>
+                    <attribute qualifier="noofLatest" type="java.lang.Integer">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+    </itemtypes>
+</items>

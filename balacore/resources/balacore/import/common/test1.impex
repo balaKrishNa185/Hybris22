@@ -1,0 +1,8 @@
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId
+                             ;helloWorldPerformable;helloWorldPerformable
+
+INSERT_UPDATE HelloWorldCronJob;code[unique=true];name;place
+                               ;helloWorldCronJob;bala;hyd
+
+INSERT_UPDATE Trigger;cronJob[unique=true];cronExpression
+                      ;helloWorldCronJob;0 */2 * ? * *

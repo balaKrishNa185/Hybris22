@@ -1,0 +1,6 @@
+
+INSERT_UPDATE CustomersRemovalCronJob; code[unique=true];job(code);xDaysOld;sessionLanguage(isocode)
+                                     ;customersRemovalCronJob;customersRemovalJob;5;en
+
+INSERT_UPDATE Trigger;cronjob(code)[unique=true];active;cronExpression
+                     ;customersRemovalCronJob;true;*/5 * * * *
